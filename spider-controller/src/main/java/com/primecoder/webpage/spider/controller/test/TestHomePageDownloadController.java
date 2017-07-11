@@ -16,7 +16,7 @@ public class TestHomePageDownloadController {
 
         PropertyConfigurator.configure(log4jConfPath);
 
-        BasicConfigurator.configure();
+        //BasicConfigurator.configure();
 
         HomePageDownloadController homePageDownloadController = new HomePageDownloadController();
 

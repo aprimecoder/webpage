@@ -51,8 +51,28 @@ public class ParserBloggerPage {
                 Elements pageClasses = doc.getElementsByClass("postTitle");
                 int size = pageClasses.size();
 
+                if (size == 0) {
+                    pageClasses = doc.getElementsByClass("posthead");
+
+                    if (pageClasses.size() == 0) {
+                        
+                        return null;
+                    }
+
+                    return pageClasses.get(0).childNode(1).childNode(1).attributes().get("href");
+                }
+
                 if (size > 0) {
-                    String bloggerDocumentUrl =  pageClasses.get(0).childNode(1).attributes().get("href");
+
+                    String bloggerDocumentUrl;
+
+                    if (pageClasses.get(0).childNodes().size() == 1) {
+
+                        bloggerDocumentUrl = pageClasses.get(0).childNode(0).attributes().get("href");
+                    } else {
+
+                        bloggerDocumentUrl = pageClasses.get(0).childNode(1).attributes().get("href");
+                    }
 
                     LOGGER.info("blogger : {} document url : {}",file.getAbsolutePath(),bloggerDocumentUrl);
 
@@ -62,7 +82,10 @@ public class ParserBloggerPage {
 
         } catch (IOException e) {
 
-            LOGGER.info("blogger : {} error : {}",file.getAbsolutePath(),e.getMessage());
+            LOGGER.error("blogger : {} error : {}",file.getAbsolutePath(),e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+
+            LOGGER.error("parser file : {} error!",file.getAbsolutePath());
         }
 
         return null;

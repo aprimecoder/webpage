@@ -3,6 +3,8 @@ package com.primecoder.webpage.spider.core.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.UUID;
+
 /**
  * Created by primecoder on 2017/7/8.
  * E-mail : aprimecoder@gmail.com
@@ -40,8 +42,10 @@ public class RelationDao {
 
     public void insert(String followeeId,String followerId,boolean relation) {
 
-        String insertSql= "INSERT INTO blogger_relation (followee_id,follower_id,is_relate) " +
-                "VALUES('" + followeeId + "','" + followerId
+        String id = UUID.randomUUID().toString();
+
+        String insertSql= "INSERT INTO blogger_relation (id,followee_id,follower_id,is_relate) " +
+                "VALUES('" + id + "','" + followeeId + "','" + followerId
                 + "'," + relation + ")";
 
         COMMON_DAO.executeInsert(insertSql);

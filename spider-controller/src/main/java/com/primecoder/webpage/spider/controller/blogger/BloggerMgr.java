@@ -35,6 +35,12 @@ public class BloggerMgr {
         String documentPath = "D:\\webpage\\temp\\" + bloggerName + "-document.html";
 
         String content = httpClientDownload.download(documentUrl);
+
+        if (content == null) {
+
+            return;
+        }
+
         storage.storage(documentPath,content);
 
         Document doc;

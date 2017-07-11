@@ -29,7 +29,7 @@ public class BloggerRelationController {
 
     private void getRelationById(String bloggerId) {
 
-        getFollowee(bloggerId);
+        //getFollowee(bloggerId);
 
         getFollower(bloggerId);
 
@@ -59,6 +59,11 @@ public class BloggerRelationController {
         for (String followName : followers) {
             String followerId = BLOGGER_SERVICE.getBloggerIdByName(followName);
 
+            if (followerId == null) {
+
+                return;
+            }
+
             updateRelation(bloggerId,followerId);
         }
     }
@@ -71,6 +76,10 @@ public class BloggerRelationController {
 
         for (String followName : followes) {
             String followeeId = BLOGGER_SERVICE.getBloggerIdByName(followName);
+
+            if (null == followeeId) {
+                continue;
+            }
 
             updateRelation(followeeId,bloggerId);
         }

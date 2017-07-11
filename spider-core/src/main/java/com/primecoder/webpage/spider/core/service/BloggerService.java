@@ -5,6 +5,7 @@ import com.primecoder.webpage.spider.core.dao.BloggerDao;
 import com.primecoder.webpage.spider.core.download.HttpClientDownload;
 import com.primecoder.webpage.spider.core.entity.BloggerEntity;
 import com.primecoder.webpage.spider.core.parser.ParserBloggerGuid;
+import com.primecoder.webpage.spider.core.parser.ParserBloggerHomePage;
 import com.primecoder.webpage.spider.core.parser.ParserBloggerPage;
 import com.primecoder.webpage.spider.core.storage.Storage;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ public class BloggerService {
     private final Storage storage = new Storage();
 
     public static final ParserBloggerPage PARSER_BLOGGER_PAGE = ParserBloggerPage.getInstance();
+
+    private static final ParserBloggerHomePage PARSER_BLOGGER_HOME_PAGE = ParserBloggerHomePage.getInstance();
 
     private static final ParserBloggerGuid PARSER_BLOGGER_GUID = ParserBloggerGuid.getInstance();
 
@@ -61,10 +64,19 @@ public class BloggerService {
 
         if (null != content) {
             storage.storage(bloggerHomePath,content);
+        } else {
+
+            return null;
         }
 
         File homeFile = new File(bloggerHomePath);
         String pageDocumentUrl = PARSER_BLOGGER_PAGE.parser(homeFile);
+
+        if (pageDocumentUrl == null) {
+
+            return getBloggerIdByHomePage(bloggerName);
+        }
+
         String documentContent = httpClientDownload.download(pageDocumentUrl);
 
         DirMgr.mkdir(bloggerPath);
@@ -72,6 +84,9 @@ public class BloggerService {
 
         if (null != documentContent) {
             storage.storage(bloggerDocumentPath,documentContent);
+        } else {
+
+            return null;
         }
 
         String bloggerId = PARSER_BLOGGER_GUID.parser(new File(bloggerDocumentPath));
@@ -84,5 +99,36 @@ public class BloggerService {
         BLOGGER_DAO.insert(bloggerEntity);
 
         return bloggerId;
+    }
+
+    public String getBloggerIdByHomePage(String bloggerName) {
+
+        String homeUrl = "https://home.cnblogs.com/u/" + bloggerName;
+
+        String content = httpClientDownload.download(homeUrl);
+
+        String bloggerPath = BLOGGER_BASE_PATH + bloggerName;
+        DirMgr.mkdir(bloggerPath);
+        String bloggerHomePath = bloggerPath + "\\home.html";
+
+        if (null != content) {
+            storage.storage(bloggerHomePath,content);
+
+            String bloggerId = PARSER_BLOGGER_HOME_PAGE.parser(new File(bloggerHomePath));
+            String bloggerUrl = "http://www.cnblogs.com/" + bloggerName + "/";
+
+            BloggerEntity bloggerEntity = new BloggerEntity();
+            bloggerEntity.setBloggerId(bloggerId);
+            bloggerEntity.setBloggerUrl(bloggerUrl);
+            bloggerEntity.setBloggerName(bloggerName);
+
+            BLOGGER_DAO.insert(bloggerEntity);
+
+            return bloggerId;
+
+        } else {
+
+            return null;
+        }
     }
 }
