@@ -33,6 +33,8 @@ public class Storage {
             fos.flush();
             fos.close();
 
+            LOGGER.info("storage to path:{}",filePath);
+
         } catch (UTFDataFormatException e){
 
             LOGGER.error("storage filePath:{} error,msg:{}",filePath,e.getMessage());
