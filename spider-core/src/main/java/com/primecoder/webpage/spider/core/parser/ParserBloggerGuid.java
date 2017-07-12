@@ -57,6 +57,15 @@ public class ParserBloggerGuid {
                         String[] arr = data.split(",");
                         for (String str : arr) {
                             if (str.contains("cb_blogUserGuid")) {
+
+                                String[] strs = str.split("=");
+                                if (null == strs || strs.length < 2) {
+
+                                    LOGGER.info("parser blogger file : {} guid error!",file.getAbsolutePath());
+
+                                    continue;
+                                }
+
                                 String s = str.split("=")[1];
                                 blogUserGuid = s.substring(1,s.length() - 1);
                                 break;
