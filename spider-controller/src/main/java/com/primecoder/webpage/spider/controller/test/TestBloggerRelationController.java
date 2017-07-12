@@ -9,7 +9,7 @@ import org.apache.log4j.PropertyConfigurator;
  */
 public class TestBloggerRelationController {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         String log4jConfPath = System.getProperty("user.dir") + "/spider-core/src/main/java/log4j.properties";
 

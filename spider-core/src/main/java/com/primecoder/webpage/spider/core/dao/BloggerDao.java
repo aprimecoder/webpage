@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by primecoder on 2017/7/8.
@@ -61,6 +63,53 @@ public class BloggerDao {
 
         return COMMON_DAO.exist(selectSql);
 
+    }
+
+    public void bloggerHandled(String bloggerId) {
+
+        String sql = "update blogger_info set is_handle = true where blogger_id = '" + bloggerId + "'";
+
+        COMMON_DAO.executeInsert(sql);
+    }
+
+    public List<String> getBloggerIds(int number) {
+
+        String sql = "select blogger_id bloggerId from blogger_info where is_handle = false LIMIT 0,500";
+
+        Statement stmt = null;
+
+        Connection connection = DB_CONNECTION.get();
+
+        List<String> bloggerIds = new ArrayList<>();
+
+        try {
+
+            stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery(sql);
+            while (res.next()) {
+                String bloggerId = res.getString("bloggerId");
+                bloggerIds.add(bloggerId);
+            }
+
+        } catch (SQLException e) {
+
+            LOGGER.error("execute sql : {} error : {}",sql,e.getMessage());
+
+        } finally {
+
+            if (null != stmt) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+
+                    LOGGER.error("execute sql : {} error : {}",sql,e.getMessage());
+                }
+            }
+
+            DB_CONNECTION.put(connection);
+        }
+
+        return bloggerIds;
     }
 
 }

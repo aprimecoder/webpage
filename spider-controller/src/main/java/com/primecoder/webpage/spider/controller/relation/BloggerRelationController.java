@@ -2,9 +2,12 @@ package com.primecoder.webpage.spider.controller.relation;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.primecoder.webpage.spider.core.dao.BloggerDao;
 import com.primecoder.webpage.spider.core.dao.RelationDao;
 import com.primecoder.webpage.spider.core.download.HttpClientPost;
 import com.primecoder.webpage.spider.core.service.BloggerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,23 +19,40 @@ import java.util.List;
 public class BloggerRelationController {
 
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(BloggerRelationController.class);
+
     private static final HttpClientPost HTTP_CLIENT_POST = HttpClientPost.getInstance();
 
     private static final BloggerService BLOGGER_SERVICE = BloggerService.getInstance();
 
     private static final RelationDao RELATION_DAO = RelationDao.getInstance();
 
-    public void start() {
+    public static final BloggerDao BLOGGER_DAO = BloggerDao.getInstance();
 
-        getRelationById("0022c59e-d37f-de11-be36-001cf0cd104b");
+    public static final QueueMgr QUEUE_MGR = QueueMgr.getInstance();
+
+    public void start() throws InterruptedException {
+
+        while(true) {
+
+            String bloggerId = QUEUE_MGR.get();
+
+            getRelationById(bloggerId);
+
+            Thread.sleep(100);
+        }
+
     }
 
     private void getRelationById(String bloggerId) {
 
-        //getFollowee(bloggerId);
+        getFollowee(bloggerId);
 
         getFollower(bloggerId);
 
+        BLOGGER_DAO.bloggerHandled(bloggerId);
+
+        LOGGER.info("handled bloggerId : {}",bloggerId);
     }
 
     private void updateRelation(String followeeId,String followerId) {
