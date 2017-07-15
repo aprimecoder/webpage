@@ -19,7 +19,11 @@ import java.util.List;
 public class BloggerRelationController {
 
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(BloggerRelationController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BloggerRelationController.class);
+
+
+    private static BloggerRelationController instance = null;
+
 
     private static final HttpClientPost HTTP_CLIENT_POST = HttpClientPost.getInstance();
 
@@ -29,19 +33,25 @@ public class BloggerRelationController {
 
     public static final BloggerDao BLOGGER_DAO = BloggerDao.getInstance();
 
-    public static final QueueMgr QUEUE_MGR = QueueMgr.getInstance();
 
-    public void start() throws InterruptedException {
+    private BloggerRelationController() {
 
-        while(true) {
+    }
 
-            String bloggerId = QUEUE_MGR.get();
+    public static synchronized BloggerRelationController getInstance() {
 
-            getRelationById(bloggerId);
-
-            Thread.sleep(100);
+        if (null == instance) {
+            instance = new BloggerRelationController();
         }
 
+        return instance;
+    }
+
+    public String start(String bloggerId) throws InterruptedException {
+
+        getRelationById(bloggerId);
+
+        return bloggerId;
     }
 
     private void getRelationById(String bloggerId) {
@@ -86,6 +96,8 @@ public class BloggerRelationController {
 
             updateRelation(bloggerId,followerId);
         }
+
+        LOGGER.info("bloggerId : {} get follower success!",bloggerId);
     }
 
     private void getFollowee(String bloggerId) {
@@ -103,6 +115,8 @@ public class BloggerRelationController {
 
             updateRelation(followeeId,bloggerId);
         }
+
+        LOGGER.info("bloggerId : {} get followee success!",bloggerId);
     }
 
     private void getFollowList(String bloggerId,List<String> follows,boolean isFollowes) {

@@ -35,12 +35,12 @@ public class QueueMgr {
 
     public static final Queue<String> queue = new LinkedList<>();
 
-    public void put(String bloggerId) {
+    public synchronized void put(String bloggerId) {
 
         queue.add(bloggerId);
     }
 
-    public String get() {
+    public synchronized String get() {
 
         String bloggerId =  queue.poll();
 
@@ -57,7 +57,7 @@ public class QueueMgr {
         return bloggerId;
     }
 
-    private void putBloggerIdsIntoQueue() {
+    private synchronized void putBloggerIdsIntoQueue() {
 
         List<String> bloggerIds = BLOGGER_DAO.getBloggerIds(500);
         for (String bloggerId : bloggerIds) {

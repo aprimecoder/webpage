@@ -69,6 +69,11 @@ public class ParserBloggerPage {
                     if (pageClasses.get(0).childNodes().size() == 1) {
 
                         bloggerDocumentUrl = pageClasses.get(0).childNode(0).attributes().get("href");
+
+                        if ("".equals(bloggerDocumentUrl)) {
+                            bloggerDocumentUrl = pageClasses.get(0).attributes().get("href");
+                        }
+
                     } else {
 
                         bloggerDocumentUrl = pageClasses.get(0).childNode(1).attributes().get("href");

@@ -53,8 +53,8 @@ public class RelationDao {
 
     public void update(String followeeId,String followerId,boolean relation) {
 
-        String updateSql= "update blogger_relation set relation = " + relation + " where followee_id = '"
-                + followeeId + "' and follower_id = '" + followerId;
+        String updateSql= "update blogger_relation set is_relate = " + relation + " where followee_id = '"
+                + followeeId + "' and follower_id = '" + followerId + "'";
 
         COMMON_DAO.executeInsert(updateSql);
     }

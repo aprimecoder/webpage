@@ -14,7 +14,7 @@ public class DBConnection {
 
     private static DBConnection instance = null;
 
-    private static final int CONNECTION_NUM = 10;
+    private static final int CONNECTION_NUM = 100;
 
     private final BlockingQueue<Connection> connections = new LinkedBlockingQueue<>(CONNECTION_NUM);
 
@@ -47,7 +47,7 @@ public class DBConnection {
         }
     }
 
-    public static synchronized DBConnection getInstance() {
+    public static DBConnection getInstance() {
 
         if (null == instance) {
             instance = new DBConnection();
@@ -56,7 +56,7 @@ public class DBConnection {
         return instance;
     }
 
-    public synchronized Connection get() {
+    public Connection get() {
 
         try {
             return connections.take();

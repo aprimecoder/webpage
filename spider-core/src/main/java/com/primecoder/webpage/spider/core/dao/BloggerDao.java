@@ -65,6 +65,45 @@ public class BloggerDao {
 
     }
 
+    public String getIdByName(String bloggerName) {
+
+        String sql = "select blogger_id from blogger_info where blogger_name = '" + bloggerName + "'";
+
+        Statement stmt = null;
+
+        Connection connection = DB_CONNECTION.get();
+
+        try {
+
+            stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery(sql);
+            if (res.next()) {
+                String bloggerId = res.getString("blogger_id");
+
+                return bloggerId;
+            }
+
+        } catch (SQLException e) {
+
+            LOGGER.error("execute sql : {} error : {}",sql,e.getMessage());
+
+        } finally {
+
+            if (null != stmt) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+
+                    LOGGER.error("execute sql : {} error : {}",sql,e.getMessage());
+                }
+            }
+
+            DB_CONNECTION.put(connection);
+        }
+
+        return null;
+    }
+
     public void bloggerHandled(String bloggerId) {
 
         String sql = "update blogger_info set is_handle = true where blogger_id = '" + bloggerId + "'";
