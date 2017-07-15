@@ -14,7 +14,7 @@ public class TestParserBloggerHomePage {
 
         ParserBloggerHomePage parserBloggerHomePage = ParserBloggerHomePage.getInstance();
 
-        File file = new File("E:\\webpage\\blogger\\969534\\home.html");
+        File file = new File("E:\\webpage\\blogger\\tugenhua0707\\home.html");
 
         parserBloggerHomePage.parser(file);
     }
