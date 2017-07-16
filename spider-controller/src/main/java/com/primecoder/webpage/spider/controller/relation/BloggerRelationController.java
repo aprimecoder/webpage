@@ -145,6 +145,8 @@ public class BloggerRelationController {
 
         JSONObject pageOneObj = HTTP_CLIENT_POST.postBloggerRelation(obj);
 
+        LOGGER.info("post bloggerId : {},page : {} success!",bloggerId,page);
+
         return pageOneObj;
     }
 

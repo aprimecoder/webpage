@@ -62,6 +62,9 @@ public class BloggerService {
         String dbId = getBloggerIdFromDB(bloggerName);
 
         if (null != dbId) {
+
+            LOGGER.info("bloggerName : {} is already in DB,id : {}",bloggerName,dbId);
+
             return dbId;
         }
 
