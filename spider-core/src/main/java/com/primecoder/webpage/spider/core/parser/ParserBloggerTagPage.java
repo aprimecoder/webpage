@@ -249,6 +249,8 @@ public class ParserBloggerTagPage {
         } catch (StringIndexOutOfBoundsException e) {
 
             LOGGER.error("get category count error! text is : {}",text);
+        } catch (NumberFormatException e) {
+            LOGGER.error("get category count error! text is : {}",text);
         }
 
         return cnt;
