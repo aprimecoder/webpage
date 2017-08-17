@@ -15,6 +15,8 @@ public class UrlDownloadedEntity {
 
     private int type;
 
+    private String pageId;
+
     public String getBloggerName() {
         return bloggerName;
     }
@@ -45,5 +47,13 @@ public class UrlDownloadedEntity {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getPageId() {
+        return pageId;
+    }
+
+    public void setPageId(String pageId) {
+        this.pageId = pageId;
     }
 }

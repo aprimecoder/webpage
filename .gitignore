@@ -26,3 +26,5 @@ overlays
 build/
 
 /.idea/
+/spider-core/src/main/java/META-INF/
+/META-INF/

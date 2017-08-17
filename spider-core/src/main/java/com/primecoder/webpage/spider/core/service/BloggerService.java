@@ -25,7 +25,7 @@ public class BloggerService {
 
     private static BloggerService instance = null;
 
-    public static final String BLOGGER_BASE_PATH = "E:\\webpage\\blogger\\";
+    private static final String BLOGGER_BASE_PATH = "E:\\webpage\\blogger\\";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BloggerService.class);
 
@@ -33,7 +33,7 @@ public class BloggerService {
 
     private final Storage storage = new Storage();
 
-    public static final ParserBloggerPage PARSER_BLOGGER_PAGE = ParserBloggerPage.getInstance();
+    private static final ParserBloggerPage PARSER_BLOGGER_PAGE = ParserBloggerPage.getInstance();
 
     private static final ParserBloggerHomePage PARSER_BLOGGER_HOME_PAGE = ParserBloggerHomePage.getInstance();
 
@@ -41,7 +41,7 @@ public class BloggerService {
 
     private static final UrlDownloadedDao URL_DOWNLOADED_DAO = UrlDownloadedDao.getInstance();
 
-    public static final BloggerDao BLOGGER_DAO = BloggerDao.getInstance();
+    private static final BloggerDao BLOGGER_DAO = BloggerDao.getInstance();
 
     private BloggerService() {
 
@@ -84,7 +84,7 @@ public class BloggerService {
         }
 
         //downloaded url into db
-        putDownloadedIntoDB(bloggerName,bloggerUrl,bloggerHomePath,0);
+        //putDownloadedIntoDB(bloggerName,bloggerUrl,bloggerHomePath,0);
 
         File homeFile = new File(bloggerHomePath);
         String pageDocumentUrl = PARSER_BLOGGER_PAGE.parser(homeFile);
@@ -106,7 +106,7 @@ public class BloggerService {
             return null;
         }
 
-        putDownloadedIntoDB(bloggerName,pageDocumentUrl,bloggerDocumentPath,1);
+        //putDownloadedIntoDB(bloggerName,pageDocumentUrl,bloggerDocumentPath,1);
 
         String bloggerId = PARSER_BLOGGER_GUID.parser(new File(bloggerDocumentPath));
 

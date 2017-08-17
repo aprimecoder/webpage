@@ -151,4 +151,48 @@ public class BloggerDao {
         return bloggerIds;
     }
 
+    public void setDownloaded(String bloggerName) {
+
+        String sql = "update blogger_info set is_downloaded = true where blogger_name = '" + bloggerName + "'";
+
+        COMMON_DAO.executeInsert(sql);
+    }
+
+    public String getBloggerName() {
+
+        String sql = "select blogger_name bloggerName from blogger_info where is_downloaded = false LIMIT 0,1";
+
+        Statement stmt = null;
+
+        Connection connection = DB_CONNECTION.get();
+
+        try {
+
+            stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery(sql);
+            if (res.next()) {
+                return res.getString("bloggerName");
+            }
+
+        } catch (SQLException e) {
+
+            LOGGER.error("execute sql : {} error : {}",sql,e.getMessage());
+
+        } finally {
+
+            if (null != stmt) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+
+                    LOGGER.error("execute sql : {} error : {}",sql,e.getMessage());
+                }
+            }
+
+            DB_CONNECTION.put(connection);
+        }
+
+        return null;
+    }
+
 }
