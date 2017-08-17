@@ -127,8 +127,27 @@ public class ParserBloggerTagListPage {
 
         LOGGER.info(text);
 
-        String name = text.substring(0,rightIndex);
-        String count = text.substring(rightIndex + 1,rightIndex0);
+        String name = null;
+        String count = null;
+
+        try {
+
+            name = text.substring(0,rightIndex);
+            count = text.substring(rightIndex + 1,rightIndex0);
+
+        } catch (StringIndexOutOfBoundsException e) {
+
+            LOGGER.error("parser tag name error!text : {}",text);
+
+        }
+
+        if (name == null || count == null) {
+            Map<String,String> tagMap = new HashMap<>();
+            tagMap.put("name",text);
+            tagMap.put("count","0");
+            return tagMap;
+        }
+
 
         try {
             Integer.valueOf(count);
