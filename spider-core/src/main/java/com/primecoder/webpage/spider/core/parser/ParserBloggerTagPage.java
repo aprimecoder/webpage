@@ -80,7 +80,18 @@ public class ParserBloggerTagPage {
                             continue;
                         }
 
-                        String readText = bloggerPageClass.childNode(5).childNode(2).outerHtml();
+                        String readText = "";
+
+                        try {
+
+                            readText = bloggerPageClass.childNode(5).childNode(2).outerHtml();
+
+                        } catch (IndexOutOfBoundsException e) {
+
+                            LOGGER.error("parser category error! file : {}",file.getAbsolutePath());
+                            continue;
+                        }
+
                         int readCount = getCatagoryCount(readText);
 
                         if (readCount == -1) {
